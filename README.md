@@ -1,7 +1,7 @@
-BeBot (SDP)
+# BeBot (SDP)
 
-##To build Dependensies
+## To build Dependensies
 make build-deps
 
-##To run
+## To run
 make run
