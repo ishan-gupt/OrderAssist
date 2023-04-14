@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"context"
+	ctx "context"
 	"io/ioutil"
 
 	waProto "go.mau.fi/whatsmeow/binary/proto"
@@ -33,7 +33,7 @@ func UploadImage(url string, caption string, mimetype string, client *whatsmeow.
 		return err
 	}
 
-	resp, err := client.Upload(context.Background(), imageBytes, whatsmeow.MediaImage)
+	resp, err := client.Upload(ctx.Background(), imageBytes, whatsmeow.MediaImage)
 	if err != nil {
 		return err
 	}
@@ -49,7 +49,7 @@ func UploadImage(url string, caption string, mimetype string, client *whatsmeow.
 		FileLength:    &resp.FileLength,
 	}
 
-	_, err = client.SendMessage(receiver, "", &waProto.Message{
+	_, err = client.SendMessage(ctx.Background(), receiver, &waProto.Message{
 		ImageMessage: imageMsg,
 	})
 

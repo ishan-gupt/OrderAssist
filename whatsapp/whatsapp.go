@@ -1,13 +1,13 @@
 package whatsapp
 
 import (
-	"WhatsText/handlers"
-	"WhatsText/utils"
+	"BeBot/handlers"
+	"BeBot/utils"
 	"context"
 	"fmt"
 	"github.com/mdp/qrterminal"
 	"go.mau.fi/whatsmeow"
-	"go.mau.fi/whatsmeow/store/sqlstore" 
+	"go.mau.fi/whatsmeow/store/sqlstore"
 	waLog "go.mau.fi/whatsmeow/util/log"
 	"os"
 	"os/signal"
@@ -17,10 +17,6 @@ import (
 var client *whatsmeow.Client
 
 func Connect() error {
-	var name = "WhatsText"
-	//fmt.Println("Enter Your Name: ")
-	//fmt.Scanln(&name)
-	utils.NameChange(name)
 	dbLog := waLog.Stdout("Database", "INFO", true)
 	container, err := sqlstore.New("sqlite3", "file:wpp_store.db?_foreign_keys=on", dbLog)
 	if err != nil {
@@ -37,6 +33,10 @@ func Connect() error {
 	handlers.SetHandlers(c)
 
 	if c.Store.ID == nil {
+		var name = "BeBot"
+		//fmt.Println("Enter Your Name: ")
+		//fmt.Scanln(&name)
+		utils.NameChange(name)
 		qrChan, _ := c.GetQRChannel(context.Background())
 		err = c.Connect()
 		if err != nil {

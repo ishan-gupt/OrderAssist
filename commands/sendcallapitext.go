@@ -1,7 +1,7 @@
 package commands
 
 import (
-	"WhatsText/utils"
+	"BeBot/utils"
 	"fmt"
 	"go.mau.fi/whatsmeow"
 	"go.mau.fi/whatsmeow/types"
