@@ -19,3 +19,5 @@
 .idea
 # Go workspace file
 go.work
+
+.db
