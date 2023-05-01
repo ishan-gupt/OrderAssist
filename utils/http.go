@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"bytes"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
@@ -49,5 +50,14 @@ func GetJson(url string, target interface{}) error {
 	}
 	defer r.Body.Close()
 
+	return json.NewDecoder(r.Body).Decode(target)
+}
+func PostJson(url string, target interface{}, data []byte) error {
+	bodyReader := bytes.NewReader(data)
+	r, err := http.NewRequest(http.MethodPost, url, bodyReader)
+	if err != nil {
+		return err
+	}
+	defer r.Body.Close()
 	return json.NewDecoder(r.Body).Decode(target)
 }

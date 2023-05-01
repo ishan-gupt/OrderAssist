@@ -8,7 +8,6 @@ import (
 
 	"go.mau.fi/whatsmeow"
 	"go.mau.fi/whatsmeow/types"
-	"google.golang.org/protobuf/proto"
 )
 
 func GetImageBytes(url string) ([]byte, error) {
@@ -27,7 +26,7 @@ func GetImageBytes(url string) ([]byte, error) {
 	return b, err
 }
 
-func UploadImage(url string, caption string, mimetype string, client *whatsmeow.Client, receiver types.JID) error {
+func UploadImage(url string, client *whatsmeow.Client, receiver types.JID) error {
 	imageBytes, err := GetImageBytes(url)
 	if err != nil {
 		return err
@@ -39,8 +38,6 @@ func UploadImage(url string, caption string, mimetype string, client *whatsmeow.
 	}
 
 	imageMsg := &waProto.ImageMessage{
-		Caption:       proto.String(caption),
-		Mimetype:      proto.String(mimetype),
 		Url:           &resp.URL,
 		DirectPath:    &resp.DirectPath,
 		MediaKey:      resp.MediaKey,

@@ -1,7 +1,9 @@
 package commands
 
 import (
+	"encoding/json"
 	"fmt"
+	"regexp"
 	"strings"
 
 	"WhatsText/utils"
@@ -11,28 +13,19 @@ import (
 )
 
 type Image struct {
-	Copyright    string `json:"copyright"`
-	Date         string `json:"date"`
-	Explaination string `json:"explaination"`
-	URL          string `json:"url"`
-	HDURL        string `json:"hdurl"`
-	Title        string `json:"title"`
+	Prompt string `json:"prompt"`
+}
+type Response struct {
+	Image string `json:"image"`
 }
 
 func ImageHandler(evt interface{}, c *whatsmeow.Client) {
 	switch v := evt.(type) {
 	case *events.Message:
 		msg := strings.ToLower(v.Message.GetConversation())
-
-		switch msg {
-		case "astrology":
-			err := SendImage(c, v.Info.Chat)
-			if err != nil {
-				fmt.Println(err.Error())
-			}
-
-		case "astro":
-			err := SendImage(c, v.Info.Chat)
+		match1, _ := regexp.MatchString("Image of", msg)
+		if match1 == true {
+			err := SendImage(c, v.Info.Chat, msg)
 			if err != nil {
 				fmt.Println(err.Error())
 			}
@@ -40,13 +33,13 @@ func ImageHandler(evt interface{}, c *whatsmeow.Client) {
 	}
 }
 
-func SendImage(client *whatsmeow.Client, receiver types.JID) error {
-	c := Image{}
-	utils.GetJson("https://go-apod.herokuapp.com/apod", &c)
+func SendImage(client *whatsmeow.Client, receiver types.JID, message string) error {
+	c := Response{}
+	myJson := Image{message}
+	reqData, _ := json.Marshal(myJson)
+	utils.PostJson("https://openai-image-7la8.onrender.com/image/generate", &c, reqData)
 	err := utils.UploadImage(
-		c.URL,
-		c.Title,
-		"image/png",
+		c.Image,
 		client,
 		receiver)
 
