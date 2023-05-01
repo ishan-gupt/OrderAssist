@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"strings"
 
-	"WhatsText/utils"
+	"BeBot/utils"
 	"go.mau.fi/whatsmeow"
 	"go.mau.fi/whatsmeow/types"
 	"go.mau.fi/whatsmeow/types/events"

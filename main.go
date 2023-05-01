@@ -1,7 +1,7 @@
 package main
 
 import (
-	"WhatsText/whatsapp"
+	"BeBot/whatsapp"
 	_ "github.com/mattn/go-sqlite3"
 )
 

@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"WhatsText/commands"
+	"BeBot/commands"
 	"go.mau.fi/whatsmeow"
 )
 
