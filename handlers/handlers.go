@@ -20,4 +20,10 @@ func SetHandlers(c *whatsmeow.Client) {
 	c.AddEventHandler(func(evt interface{}) {
 		commands.ApiHandler(evt, c)
 	})
+	c.AddEventHandler(func(evt interface{}) {
+		commands.UserHandler(evt, c)
+	})
+	c.AddEventHandler(func(evt interface{}) {
+		commands.OrderHandler(evt, c)
+	})
 }

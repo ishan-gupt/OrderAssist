@@ -29,6 +29,7 @@ func ApiHandler(evt interface{}, c *whatsmeow.Client) {
 		match1, _ := regexp.MatchString("deploy", msg)
 		if match1 == true {
 			err := ShoudIDeployToday(c, v.Info.Chat)
+			fmt.Println(v.Info.Sender)
 			if err != nil {
 				fmt.Println(err.Error())
 			}
