@@ -20,4 +20,6 @@
 # Go workspace file
 go.work
 
-.db
+*.db
+module
+wpp_store.db

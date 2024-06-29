@@ -4,7 +4,7 @@ import (
 	ctx "context"
 	"io/ioutil"
 
-	waProto "go.mau.fi/whatsmeow/binary/proto"
+	"go.mau.fi/whatsmeow/proto/waE2E"
 
 	"go.mau.fi/whatsmeow"
 	"go.mau.fi/whatsmeow/types"
@@ -37,16 +37,18 @@ func UploadImage(url string, client *whatsmeow.Client, receiver types.JID) error
 		return err
 	}
 
-	imageMsg := &waProto.ImageMessage{
-		Url:           &resp.URL,
-		DirectPath:    &resp.DirectPath,
-		MediaKey:      resp.MediaKey,
-		FileEncSha256: resp.FileEncSHA256,
-		FileSha256:    resp.FileSHA256,
-		FileLength:    &resp.FileLength,
+	imageMsg := &waE2E.ImageMessage{
+		DirectPath: &resp.DirectPath,
+		MediaKey:   resp.MediaKey,
+		FileLength: &resp.FileLength,
 	}
-
-	_, err = client.SendMessage(ctx.Background(), receiver, &waProto.Message{
+	// Url:           &resp.URL,
+	// DirectPath:    &resp.DirectPath,
+	// MediaKey:      resp.MediaKey,
+	// FileEncSha256: resp.FileEncSHA256,
+	// FileSha256:    resp.FileSHA256,
+	// FileLength:    &resp.FileLength,
+	_, err = client.SendMessage(ctx.Background(), receiver, &waE2E.Message{
 		ImageMessage: imageMsg,
 	})
 
