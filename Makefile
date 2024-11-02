@@ -18,7 +18,7 @@ mk-build-dir:
 	@mkdir -p ${BUILD_DIR}
 
 build-deps:
-	@go get -d -v ./...
+	@go get -v ./...
 
 bin-data: build-deps
 ifeq ($(RESOURCES_FILE_EXISTS), 1)
@@ -54,14 +54,3 @@ badge:
 	gopherbadger -md="README.md" -png=false 1>&2 2> /dev/null
 	@if [ -f coverage.out ]; then rm coverage.out ; fi; 
 
-############## commit tools
-install-commitizen:
-	@npm install -g commitizen
-	@npm install -g cz-conventional-changelog
-	@npm install -g conventional-changelog-cli
-
-commit:
-	@git cz
-
-changelog:
-	@conventional-changelog -p angular -i CHANGELOG.md -s -r 0

@@ -20,10 +20,10 @@ func TextHandler(evt interface{}, c *whatsmeow.Client) {
 		var text string
 		var text1 string
 		var text2 string
-		
-			text = "Hi there. Welcome to BeBot, your own whatsapp chatbot. \n As you are using us for the first time plese help us with your details \n"
-			text1 = "To get started select the store you want to order from \n 1.Abc stores \n 2.Bkc stores \n 3. Mlp stores \n Send us the below asked deatils. Please replace *\":\"* in the below messages with *\"-\"*\nThank You"
-			text2 = "Name:<Your name>\nAddress:<Your address>\nStoreid:<1 or 2 or 3>"
+
+		text = "Hi there. Welcome to BeBot, your own whatsapp chatbot. \n As you are using us for the first time plese help us with your details \n"
+		text1 = "To get started select the store you want to order from \n 1.Abc stores \n 2.Bkc stores \n 3. Mlp stores \n Send us the below asked deatils. Please replace *\":\"* in the below messages with *\"-\"*\nThank You"
+		text2 = "Name:<Your name>\nAddress:<Your address>\nStoreid:<1 or 2 or 3>"
 
 		switch msg {
 		case "hello":
