@@ -28,6 +28,10 @@ type ShouldJoke struct {
 func ApiHandler(evt interface{}, c *whatsmeow.Client) {
 	switch v := evt.(type) {
 	case *events.Message:
+		// Ignore messages sent by myself
+		if v.Info.Sender.User == c.Store.ID.User {
+			return
+		}
 		msg := strings.ToLower(v.Message.GetConversation())
 
 		// Match for "deploy" keyword
@@ -63,8 +67,12 @@ func ApiHandler(evt interface{}, c *whatsmeow.Client) {
 // Function to call the ShouldIDeploy API
 func ShoudIDeployToday(client *whatsmeow.Client, receiver types.JID) error {
 	sd := new(ShoudDeploy)
-	utils.GetJson("https://shouldideploy.today/api?tz=America/Sao_Paulo", sd)
-	err := utils.SendMessage(
+	err := utils.GetJson("https://shouldideploy.today/api?tz=America/Sao_Paulo", sd)
+	if err != nil {
+		return fmt.Errorf("failed to call shouldideploy API: %v", err)
+	}
+	
+	err = utils.SendMessage(
 		sd.Message,
 		client,
 		receiver)
@@ -74,8 +82,12 @@ func ShoudIDeployToday(client *whatsmeow.Client, receiver types.JID) error {
 // Function to call the Joke API
 func ShoudIPJokeToday(client *whatsmeow.Client, receiver types.JID) error {
 	sd := new(ShouldJoke)
-	utils.GetJson("https://v2.jokeapi.dev/joke/Miscellaneous,Dark,Pun,Spooky,Christmas?type=single", sd)
-	err := utils.SendMessage(
+	err := utils.GetJson("https://v2.jokeapi.dev/joke/Miscellaneous,Dark,Pun,Spooky,Christmas?type=single", sd)
+	if err != nil {
+		return fmt.Errorf("failed to call joke API: %v", err)
+	}
+	
+	err = utils.SendMessage(
 		sd.Joke,
 		client,
 		receiver)

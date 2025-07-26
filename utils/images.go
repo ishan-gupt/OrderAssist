@@ -2,7 +2,7 @@ package utils
 
 import (
 	ctx "context"
-	"io/ioutil"
+	"io"
 
 	"go.mau.fi/whatsmeow/proto/waE2E"
 
@@ -16,7 +16,7 @@ func GetImageBytes(url string) ([]byte, error) {
 		return nil, err
 	}
 
-	b, err := ioutil.ReadAll(r.Body)
+	b, err := io.ReadAll(r.Body)
 	if err != nil {
 		return nil, err
 	}

@@ -27,6 +27,10 @@ func UserHandler(evt interface{}, c *whatsmeow.Client) {
 	var code int
 	switch v := evt.(type) {
 	case *events.Message:
+		// Ignore messages sent by myself
+		if v.Info.Sender.User == c.Store.ID.User {
+			return
+		}
 		var number = (v.Info.Sender).String()
 		num := number[2:12]
 		msg := strings.ToLower(v.Message.GetConversation())
@@ -70,7 +74,11 @@ func UserHandler(evt interface{}, c *whatsmeow.Client) {
 			fmt.Println(storeid)
 		}
 		if name != "null" && storeid != "null" && address != "null" {
-			code = CreateUser(name, num, address, storeid)
+			err := CreateUser(name, num, address, storeid)
+			if err != nil {
+				fmt.Printf("Error creating user: %v\n", err)
+				return
+			}
 		}
 		if code == 201 {
 			err := utils.SendMessage("Profile Created", c, v.Info.Chat)
@@ -82,18 +90,18 @@ func UserHandler(evt interface{}, c *whatsmeow.Client) {
 	}
 }
 
-func CreateUser(name string, num string, address string, storeid string) int {
+func CreateUser(name string, num string, address string, storeid string) (error) {
 	url := "https://oms-bebot-backend.onrender.com/api/user/signup"
 	user := User{Number: num, Name: name, Address: address, StoreId: storeid}
 
 	jsonPayload, err := json.Marshal(user)
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("failed to marshal user data: %v", err)
 	}
 
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonPayload))
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("failed to create request: %v", err)
 	}
 
 	req.Header.Set("Content-Type", "application/json")
@@ -102,16 +110,16 @@ func CreateUser(name string, num string, address string, storeid string) int {
 	resp, err := client.Do(req)
 
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("failed to send request: %v", err)
 	}
 	defer resp.Body.Close()
 
 	var result map[string]interface{}
 	err = json.NewDecoder(resp.Body).Decode(&result)
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("failed to decode response: %v", err)
 	}
 
 	fmt.Println(result)
-	return resp.StatusCode
+	return nil
 }
